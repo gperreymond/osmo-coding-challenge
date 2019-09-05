@@ -24,4 +24,5 @@ func main() {
 	log.Println("Team Blue: ", teamBlue)
 	teamRed, _ := gubrak.TakeRight(shuffle, mates)
 	log.Println("Team Red: ", teamRed)
+	// Run a game: Select players and make teams
 }
