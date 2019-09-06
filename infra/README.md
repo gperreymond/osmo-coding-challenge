@@ -5,7 +5,7 @@ First time ELK stack is created, it could be long, because these three component
 
 ## Prepare your computer
 
-#### Troubles with elasticsearch
+#### Troubles with elasticsearch
 
 - sudo sysctl -w vm.max_map_count=262144
 - sudo sysctl -w fs.file-max=65536
