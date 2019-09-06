@@ -1,0 +1,34 @@
+debug = false
+sendAnonymousUsage = true
+checkNewVersion = false
+logLevel = "INFO"
+defaultEntryPoints = ["http", "https"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+      entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+
+[acme]
+email = "infra@lalalab.com"
+storage = "acme.json"
+caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+entryPoint = "https"
+  [acme.dnsChallenge]
+    provider = "route53" # DNS Provider name (cloudflare, OVH, gandi...)
+    delayBeforeCheck = 0
+
+[[acme.domains]]
+  main = "*.docker.localhost"
+  sans = ["docker.localhost"]
+
+[docker]
+watch = true
+
+[file]
+watch = true
+directory = "/etc/traefik/files"

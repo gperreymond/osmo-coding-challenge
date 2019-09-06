@@ -1,0 +1,107 @@
+version: "3.2"
+
+services:
+
+  memcached:
+    image: "memcached:1.5.17-alpine"
+    ports:
+      - "11211:11211"
+    networks:
+      - traefik
+
+  nats:
+    image: "nats:2.0.4-linux"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=nats"
+      - "traefik.frontend.rule=Host:nats.docker.localhost"
+      - "traefik.port=8222"
+      - "traefik.docker.network=traefik"
+    networks:
+      - traefik
+    ports:
+      - "4222:4222"
+
+  rabbitmq:
+    image: "rabbitmq:3.7.17-management-alpine"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "infra"
+      RABBITMQ_DEFAULT_PASS: "infra"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=rabbitmq"
+      - "traefik.frontend.rule=Host:rabbitmq.docker.localhost"
+      - "traefik.port=15672"
+      - "traefik.docker.network=traefik"
+    ports:
+      - "5672:5672"
+    networks:
+      - traefik
+
+  couchbase:
+    image: "couchbase:community-6.0.0"
+    environment:
+      COUCHDB_USER: infra
+      COUCHDB_SECRET: infra
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=couchdb"
+      - "traefik.frontend.rule=Host:couchbase.docker.localhost"
+      - "traefik.port=8091"
+      - "traefik.docker.network=traefik"
+    volumes:
+      - cb_osmo_data:/opt/couchbase/var
+    networks:
+      - traefik
+    ports:
+      - "8091:8091"
+
+  elasticsearch:
+    build: ./elasticsearch/
+    environment:
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es_osmo_data:/usr/share/elasticsearch/data
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=elasticsearch"
+      - "traefik.frontend.rule=Host:elasticsearch.docker.localhost"
+      - "traefik.port=9200"
+      - "traefik.docker.network=traefik"
+
+  logstash:
+    build: ./logstash/
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    depends_on:
+      - elasticsearch
+    labels:
+      - "traefik.enable=false"
+    networks:
+      - traefik
+    ports:
+      - "5000:5000"
+      - "9600:9600"
+
+volumes:
+  es_osmo_data:
+  cb_osmo_data:
+
+networks:
+  traefik:
+    external:
+      name: traefik

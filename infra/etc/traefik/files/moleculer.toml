@@ -1,0 +1,11 @@
+[backends]
+  [backends.backend-moleculer-service]
+    [backends.backend-moleculer-service.servers.server1]
+    url = "http://my.host:3000"
+
+[frontends]
+  [frontends.frontend-moleculer]
+    backend = "backend-moleculer-service"
+    passHostHeader = true
+    [frontends.frontend-moleculer.routes.test_1]
+    rule = "Host:moleculer.docker.localhost"
