@@ -3,7 +3,7 @@
 Nerd stuff - Launch Osmo production on your local station w/ Docker.  
 First time ELK stack is created, it could be long, because these three components have to be build from docker files.
 
-̀̀̀## Prepare your computer
+## Prepare your computer
 
 #### Troubles with elasticsearch
 
@@ -22,7 +22,11 @@ You need to finish the couchbase installation, not so long don't worry :)
 https://couchbase.docker.localhost
 ```
 
-Then create click on __create new cluster__
+Then create click on __create new cluster__, fill user and password, then next, next, done.  
+Once the cluster is created, juste create a new bucket, and name it : __challenge__  
+Let the bucket's default ; Example __Bucket Type__ on __Couchbase__.
+
+__Infrastructure is ready!__
 
 ## Listing of infrastructure components
 

@@ -1,5 +1,5 @@
 # OSMO Coding Challenge
 
-## infrastructure
+## Infrastructure
 
 Just read the README in __infra__ directory.
