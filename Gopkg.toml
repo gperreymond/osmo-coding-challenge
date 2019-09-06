@@ -9,3 +9,7 @@
 [[constraint]]
   name = "github.com/novalagung/gubrak"
   version = "1.0.0"
+
+[[constraint]]
+  name = "github.com/couchbase/gocb"
+  version = "1.6.2"
