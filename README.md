@@ -2,4 +2,10 @@
 
 ## Infrastructure
 
-Just read the README in __infra__ directory.
+Read the README in __infra__ directory for infrastructure details.
+
+```sh
+cd infra
+./start.sh
+cd ..
+```

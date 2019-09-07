@@ -16,15 +16,14 @@ Having __docker__ and __docker-compose__ ready to use.
 
 ## First time running
 
-You need to finish the couchbase installation, not so long don't worry :)
+You need to finish the mongo installation, not so long don't worry :)
 
 ```sh
-https://couchbase.docker.localhost
+https://mongo-express.docker.localhost
 ```
 
-Then create click on __create new cluster__, fill user and password, then next, next, done.  
-Once the cluster is created, juste create a new bucket, and name it : __challenge__  
-Let the bucket's default ; Example __Bucket Type__ on __Couchbase__.
+- Create a new database: __osmo__
+- Create a new collection: __eventstore__
 
 __Infrastructure is ready!__
 

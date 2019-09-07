@@ -11,5 +11,13 @@
   version = "1.0.0"
 
 [[constraint]]
-  name = "github.com/couchbase/gocb"
+  name = "gopkg.in/couchbase/gocb.v1"
   version = "1.6.2"
+
+[[constraint]]
+  name = "go.mongodb.org/mongo-driver"
+  version = "1.1.1"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/golang/snappy"
