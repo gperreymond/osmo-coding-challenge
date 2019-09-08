@@ -16,6 +16,10 @@ Having __docker__ and __docker-compose__ ready to use.
 
 ## First time running
 
+You need to finish the postgres installation, not so long don't worry :)
+
+- Create a new database: __osmo__
+
 You need to finish the mongo installation, not so long don't worry :)
 
 ```sh

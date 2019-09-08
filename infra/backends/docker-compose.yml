@@ -40,6 +40,21 @@ services:
     networks:
       - traefik
 
+  postgres:
+    image: "postgres:9.6-alpine"
+    environment:
+      POSTGRES_DB: "osmo"
+      POSTGRES_USER: "infra"
+      POSTGRES_PASSWORD: "infra"
+    networks:
+      - traefik
+    volumes:
+      - pg_osmo_data:/var/lib/postgresql/data
+    labels:
+      - "traefik.enable=false"
+    ports:
+      - "5432:5432"
+
   mongo:
     image: "mongo:4.2"
     environment:
@@ -112,6 +127,7 @@ services:
 volumes:
   es_osmo_data:
   mg_osmo_data:
+  pg_osmo_data:
 
 networks:
   traefik:

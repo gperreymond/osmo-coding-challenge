@@ -27,3 +27,13 @@ go build main.go
 
 __Nota__   
 We could add some arguments to start only selected microservices. This is a better approch for scalabilty.
+
+#### Initialize first players
+
+```c
+names := []string{"Thrall", "Rexxar", "Gul'Dan", "Malfurion", "Garrosh", "Uther", "Anduin", "Valeera", "Morgl", "Medivh"}
+```
+
+```sh
+./main --initialize
+```

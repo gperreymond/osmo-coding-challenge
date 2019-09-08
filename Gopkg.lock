@@ -20,10 +20,28 @@
   revision = "ff6b7dc882cf4cfba7ee0b9f7dcc1ac096c554aa"
 
 [[projects]]
+  name = "github.com/jinzhu/gorm"
+  packages = [".","dialects/postgres"]
+  revision = "836fb2c19d84dac7b0272958dfb9af7cf0d0ade4"
+  version = "v1.9.10"
+
+[[projects]]
+  name = "github.com/jinzhu/inflection"
+  packages = ["."]
+  revision = "f5c5f50e6090ae76a29240b61ae2a90dd810112e"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/konsorten/go-windows-terminal-sequences"
   packages = ["."]
   revision = "f55edac94c9bbba5d6182a4be46d86a2c9b5b50e"
   version = "v1.0.2"
+
+[[projects]]
+  name = "github.com/lib/pq"
+  packages = [".","hstore","oid","scram"]
+  revision = "3427c32cb71afc948325f299f040e53c1dd78979"
+  version = "v1.2.0"
 
 [[projects]]
   name = "github.com/moleculer-go/goemitter"
@@ -60,6 +78,12 @@
   packages = ["."]
   revision = "4b96681fa6d28dd0ab5fe79bac63b3a493d9ee94"
   version = "v1.0.1"
+
+[[projects]]
+  name = "github.com/novalagung/gubrak"
+  packages = ["."]
+  revision = "47ef89cffca4da3ff1138e64e4fb5bc4becc549c"
+  version = "1.0.0"
 
 [[projects]]
   name = "github.com/satori/go.uuid"
@@ -142,6 +166,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "0a3638bf813f742e8372551472077a3c9661c5000648f4327f3a0f7e6b005153"
+  inputs-digest = "5607604251a78f632e16a155f743f1941631ff0006933b0009ed4bb3b4cd53b8"
   solver-name = "gps-cdcl"
   solver-version = 1
