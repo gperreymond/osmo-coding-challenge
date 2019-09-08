@@ -14,8 +14,8 @@ type Player struct {
 	GamesLoose int    `bson:"games_loose" json:"games_loose"`
 }
 
-// GetAggregateID ...
-func GetAggregateID(name string) (Player, error) {
+// GetPlayerAggregateID ...
+func GetPlayerAggregateID(name string) (Player, error) {
 	ctx := context.TODO()
 	var result Player
 	filter := bson.D{{Key: "data.name", Value: name}}

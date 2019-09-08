@@ -1,15 +1,14 @@
-package main
+package services
 
 import (
-	eventstore "github.com/gperreymond/osmo-coding-challenge/store"
-	player "github.com/gperreymond/osmo-coding-challenge/store"
+	store "github.com/gperreymond/osmo-coding-challenge/store"
 	"github.com/gperreymond/osmo-coding-challenge/utils"
 
 	"github.com/moleculer-go/moleculer"
-	"github.com/moleculer-go/moleculer/broker"
 )
 
-var service = moleculer.ServiceSchema{
+// PlayerService ...
+var PlayerService = moleculer.ServiceSchema{
 	Name: "Player",
 	Actions: []moleculer.Action{
 		{
@@ -17,7 +16,7 @@ var service = moleculer.ServiceSchema{
 			Handler: func(ctx moleculer.Context, params moleculer.Payload) interface{} {
 				ctx.Logger().Info("params: ", params)
 				name := params.Get("name").String()
-				data, err := player.GetAggregateID(name)
+				data, err := store.GetPlayerAggregateID(name)
 				if err != nil {
 					return err
 				}
@@ -38,14 +37,14 @@ var service = moleculer.ServiceSchema{
 					return false
 				}
 				// Prepare data
-				data := player.Player{
+				data := store.Player{
 					ID:         utils.UUID(),
 					Name:       name,
 					GamesWon:   0,
 					GamesLoose: 0,
 				}
 				// Save Event to store
-				err := eventstore.InsertEvent("Player", "Created", data.ID, data)
+				err := store.InsertEvent("Player", "Created", data.ID, data)
 				if err != nil {
 					return false
 				}
@@ -57,15 +56,7 @@ var service = moleculer.ServiceSchema{
 	},
 }
 
-func main() {
-	bkr := broker.New(&moleculer.Config{
-		Transporter: "nats://nats.docker.localhost:4222",
-		LogLevel:    "info",
-		Metrics:     true,
-	})
-	bkr.Publish(service)
-	bkr.Start()
-
-	// small hack to make the process run forever
-	select {}
+// GetPlayer ...
+func GetPlayer() moleculer.ServiceSchema {
+	return PlayerService
 }
