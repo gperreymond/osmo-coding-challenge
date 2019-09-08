@@ -40,7 +40,7 @@ func Collection() (*mongo.Client, *mongo.Collection, error) {
 }
 
 // InsertEvent ...
-func InsertEvent(aggregateID string, data interface{}) error {
+func InsertEvent(aggregateType string, eventType string, aggregateID string, data interface{}) error {
 	ctx := context.TODO()
 	conn, collection, err := Collection()
 	if err != nil {
@@ -48,7 +48,8 @@ func InsertEvent(aggregateID string, data interface{}) error {
 	}
 	e := Event{
 		AggregateID:   aggregateID,
-		AggregateType: "Player",
+		AggregateType: aggregateType,
+		EventType:     eventType,
 		CreatedAt:     time.Now().UTC(),
 		Data:          data,
 	}

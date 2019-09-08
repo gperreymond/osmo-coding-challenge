@@ -37,7 +37,7 @@ __Infrastructure is ready!__
 
 - rabbitmq: https://portainer.docker.localhost
 - nats: https://nats.docker.localhost
-- couchbase: https://couchbase.docker.localhost
+- mongodb: https://mongo-express.docker.localhost
 - logstash
 - elasticsearch
 

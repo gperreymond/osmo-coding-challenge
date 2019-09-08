@@ -1,9 +1,9 @@
 package main
 
 import (
-	"log"
-
+	eventstore "github.com/gperreymond/osmo-coding-challenge/store"
 	player "github.com/gperreymond/osmo-coding-challenge/store"
+	"github.com/gperreymond/osmo-coding-challenge/utils"
 
 	"github.com/moleculer-go/moleculer"
 	"github.com/moleculer-go/moleculer/broker"
@@ -13,14 +13,13 @@ var service = moleculer.ServiceSchema{
 	Name: "Player",
 	Actions: []moleculer.Action{
 		{
-			Name: "GetAggregateID",
+			Name: "FindAggregateID",
 			Handler: func(ctx moleculer.Context, params moleculer.Payload) interface{} {
 				ctx.Logger().Info("params: ", params)
 				name := params.Get("name").String()
 				data, err := player.GetAggregateID(name)
 				if err != nil {
-					log.Println(err)
-					return false
+					return err
 				}
 				return data
 			},
@@ -31,24 +30,27 @@ var service = moleculer.ServiceSchema{
 				ctx.Logger().Info("params: ", params)
 				name := params.Get("name").String()
 				// Control if player already created
-				control := <-ctx.Call("Player.GetAggregateID", map[string]interface{}{
+				res := <-ctx.Call("Player.FindAggregateID", map[string]interface{}{
 					"name": name,
 				})
-				ctx.Logger().Info("control: ", control)
+				ctx.Logger().Info("control: ", res)
+				if !res.IsError() {
+					return false
+				}
 				// Prepare data
-				/* data := player.Player{
+				data := player.Player{
 					ID:         utils.UUID(),
 					Name:       name,
 					GamesWon:   0,
 					GamesLoose: 0,
 				}
 				// Save Event to store
-				err := eventstore.InsertEvent(data.ID, data)
+				err := eventstore.InsertEvent("Player", "Created", data.ID, data)
 				if err != nil {
 					return false
-				} */
-				// Emit event on bus
-				// ctx.Broadcast("player.created", data)
+				}
+				// Emit Event on bus
+				ctx.Broadcast("Player.Created", data)
 				return true
 			},
 		},

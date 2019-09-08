@@ -18,7 +18,7 @@ type Player struct {
 func GetAggregateID(name string) (Player, error) {
 	ctx := context.TODO()
 	var result Player
-	filter := bson.M{}
+	filter := bson.D{{Key: "data.name", Value: name}}
 	conn, collection, err := Collection()
 	if err != nil {
 		return result, err

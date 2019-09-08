@@ -41,7 +41,7 @@ services:
       - traefik
 
   mongo:
-    image: mongo
+    image: "mongo:4.2"
     environment:
       MONGO_INITDB_ROOT_USERNAME: infra
       MONGO_INITDB_ROOT_PASSWORD: infra
