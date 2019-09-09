@@ -46,7 +46,7 @@ var PlayerService = moleculer.ServiceSchema{
 				db.AutoMigrate(&models.Player{})
 				// Create a new user in postgres
 				user := models.Player{Name: name, AggregateID: aggregateID}
-				db.Create(&user)
+				err = db.Create(&user).Error
 				if err != nil {
 					ctx.Logger().Error(err)
 					return err
