@@ -38,7 +38,7 @@ func Initialize() {
 	names := []string{"Thrall", "Rexxar", "Gul'Dan", "Malfurion", "Garrosh", "Uther", "Anduin", "Valeera", "Morgl", "Medivh"}
 	for _, name := range names {
 		bkr.Call("Player.Create", map[string]interface{}{
-			"name": name,
+			"Name": name,
 		})
 	}
 	bkr.Stop()
