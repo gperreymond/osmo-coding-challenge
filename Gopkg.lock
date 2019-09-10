@@ -20,6 +20,12 @@
   revision = "ff6b7dc882cf4cfba7ee0b9f7dcc1ac096c554aa"
 
 [[projects]]
+  name = "github.com/influxdata/influxdb"
+  packages = ["client/v2","models","pkg/escape"]
+  revision = "ff383cdc0420217e3460dabe17db54f8557d95b6"
+  version = "v1.7.8"
+
+[[projects]]
   name = "github.com/jinzhu/gorm"
   packages = [".","dialects/postgres"]
   revision = "836fb2c19d84dac7b0272958dfb9af7cf0d0ade4"
@@ -86,6 +92,12 @@
   version = "1.0.0"
 
 [[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
+  version = "v0.8.1"
+
+[[projects]]
   name = "github.com/satori/go.uuid"
   packages = ["."]
   revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
@@ -96,6 +108,12 @@
   packages = ["."]
   revision = "839c75faf7f98a33d445d181f3018b5c3409a45e"
   version = "v1.4.2"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/tevjef/go-runtime-metrics"
+  packages = [".","collector"]
+  revision = "527a540293077c77cf70479bbf9f8efb9f818cb2"
 
 [[projects]]
   name = "github.com/tidwall/gjson"
@@ -166,6 +184,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5607604251a78f632e16a155f743f1941631ff0006933b0009ed4bb3b4cd53b8"
+  inputs-digest = "ac2302aa295586473eb26f80a16cd49e9807693b1e93e5dd9b90ecacafb5971c"
   solver-name = "gps-cdcl"
   solver-version = 1

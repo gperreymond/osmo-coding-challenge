@@ -47,6 +47,7 @@ __Infrastructure is ready!__
 
 #### Frontends
 
+- grafana : https://grafana.docker.localhost
 - kibana (elk webui): https://kibana.docker.localhost
 
 ## Usages

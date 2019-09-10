@@ -2,8 +2,10 @@ package store
 
 import (
 	"context"
+	"errors"
 	"time"
 
+	"github.com/moleculer-go/moleculer"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -40,7 +42,12 @@ func Collection() (*mongo.Client, *mongo.Collection, error) {
 }
 
 // InsertEvent ...
-func InsertEvent(aggregateType string, eventType string, aggregateID string, data interface{}) error {
+func InsertEvent(aggregateType string, eventType string, params moleculer.Payload) error {
+	// AggregateID is mandatory
+	if params.Get("AggregateID").Exists() == false {
+		return errors.New("AggregateID is mandatory")
+	}
+	aggregateID := params.Get("AggregateID").String()
 	ctx := context.TODO()
 	conn, collection, err := Collection()
 	if err != nil {
@@ -51,7 +58,7 @@ func InsertEvent(aggregateType string, eventType string, aggregateID string, dat
 		AggregateType: aggregateType,
 		EventType:     eventType,
 		CreatedAt:     time.Now().UTC(),
-		Data:          data,
+		Data:          params.MapArray(),
 	}
 	_, err = collection.InsertOne(ctx, e)
 	if err != nil {

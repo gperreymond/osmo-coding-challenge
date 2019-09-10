@@ -14,15 +14,77 @@ var PlayerService = moleculer.ServiceSchema{
 	Name: "Player",
 	Events: []moleculer.Event{
 		{
+			Name: "Player.GameStarted",
+			Handler: func(ctx moleculer.Context, params moleculer.Payload) {
+				ctx.Logger().Info("params: ", params)
+				// Save Event to store
+				err := store.InsertEvent("Player", "GameStarted", params)
+				if err != nil {
+					ctx.Logger().Error(err)
+				}
+			},
+		},
+		{
+			Name: "Player.GameWonFinished",
+			Handler: func(ctx moleculer.Context, params moleculer.Payload) {
+				ctx.Logger().Info("params: ", params)
+				// Save Event to store
+				err := store.InsertEvent("Player", "GameWonFinished", params)
+				if err != nil {
+					ctx.Logger().Error(err)
+				}
+			},
+		},
+		{
+			Name: "Player.GameLooseFinished",
+			Handler: func(ctx moleculer.Context, params moleculer.Payload) {
+				ctx.Logger().Info("params: ", params)
+				// Save Event to store
+				err := store.InsertEvent("Player", "GameLooseFinished", params)
+				if err != nil {
+					ctx.Logger().Error(err)
+				}
+			},
+		},
+		{
+			Name: "Player.NumberOfKillsUpdated",
+			Handler: func(ctx moleculer.Context, params moleculer.Payload) {
+				ctx.Logger().Info("params: ", params)
+				// Save Event to store
+				err := store.InsertEvent("Player", "NumberOfKillsUpdated", params)
+				if err != nil {
+					ctx.Logger().Error(err)
+				}
+			},
+		},
+		{
+			Name: "Player.NumberOfFirstHitKillsUpdated",
+			Handler: func(ctx moleculer.Context, params moleculer.Payload) {
+				ctx.Logger().Info("params: ", params)
+				// Save Event to store
+				err := store.InsertEvent("Player", "NumberOfFirstHitKillsUpdated", params)
+				if err != nil {
+					ctx.Logger().Error(err)
+				}
+			},
+		},
+		{
+			Name: "Player.TotalAmountOfDamageDoneUpdated",
+			Handler: func(ctx moleculer.Context, params moleculer.Payload) {
+				ctx.Logger().Info("params: ", params)
+				// Save Event to store
+				err := store.InsertEvent("Player", "TotalAmountOfDamageDoneUpdated", params)
+				if err != nil {
+					ctx.Logger().Error(err)
+				}
+			},
+		},
+		{
 			Name: "Player.Created",
 			Handler: func(ctx moleculer.Context, params moleculer.Payload) {
 				ctx.Logger().Info("params: ", params)
-				name := params.Get("Name").String()
-				aggregateID := params.Get("AggregateID").String()
 				// Save Event to store
-				err := store.InsertEvent("Player", "Created", aggregateID, map[string]interface{}{
-					"Name": name,
-				})
+				err := store.InsertEvent("Player", "Created", params)
 				if err != nil {
 					ctx.Logger().Error(err)
 				}

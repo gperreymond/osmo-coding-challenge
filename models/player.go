@@ -9,6 +9,4 @@ type Player struct {
 	gorm.Model
 	AggregateID string `gorm:"type:varchar(100);unique_index" json:"aggregate_id"`
 	Name        string `gorm:"type:varchar(100);unique_index" json:"name"`
-	GamesWon    int    `json:"games_won"`
-	GamesLoose  int    `json:"games_loose"`
 }

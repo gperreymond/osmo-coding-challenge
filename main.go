@@ -9,6 +9,7 @@ import (
 	"github.com/moleculer-go/moleculer"
 	"github.com/moleculer-go/moleculer/broker"
 	"github.com/moleculer-go/moleculer/payload"
+	metrics "github.com/tevjef/go-runtime-metrics"
 )
 
 // StartServices ...
@@ -63,6 +64,11 @@ func PlayGame() {
 
 func main() {
 	arg := os.Args[1]
+	metrics.DefaultConfig.CollectionInterval = time.Second
+	if err := metrics.RunCollector(metrics.DefaultConfig); err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
 	switch arg {
 	case "--play-game":
 		PlayGame()
