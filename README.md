@@ -21,7 +21,7 @@ You can monitor the go in runtime :
 - Help to implement: https://stackoverflow.com/questions/24863164/how-to-analyze-golang-memory
 
 #### Real stress test on 100 games played auto
-![stress test](https://raw.githubusercontent.com/gperreymond/osmo-coding-challenge/master/osmo-stress-test-100.png)
+![stress test](https://raw.githubusercontent.com/gperreymond/osmo-coding-challenge/master/osmo-stress-test-100.png?token=AAVKRIIT7G5HWAWXGRQNJGK5O634C)
 
 ## How to use
 
