@@ -48,7 +48,7 @@ Import dashboard #3242 from https://grafana.com (Grafana main page -> Top left c
 Finally, launch your application: it will transmit runtime metrics to the contenerized Influxdb.
 
 #### Real stress test on 100 games played auto
-![stress test](https://raw.githubusercontent.com/gperreymond/osmo-coding-challenge/master/osmo-stress-test-100.png?token=AAVKRIIT7G5HWAWXGRQNJGK5O634C)
+![stress test](osmo-stress-test-100.png?raw=true)
 
 ## How to use
 
