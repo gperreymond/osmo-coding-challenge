@@ -8,12 +8,12 @@ Based on a solid experience with __moleculer__ for my current company.
 I decided to try the golang version (currently in progress), but fully compatible with the test.
 - https://moleculer-go-site.herokuapp.com/
 
-Due to the lack of time, I implemented a very very light version of CQRS/ES.
-To be honest it's more than a start, than a full version, but you know what I mean.
+Due to the lack of time, I implemented a very very light version of CQRS/ES.  
+With more time, in a real context of work, I will do more of course.
 
 I just want to demonstrate how I will make the architecture if I had to begin such a big project.
 
-I don't use an __Observer Pattern__ because when I want to create a new achievment, I just need to replay past events.
+I don't use an __Observer Pattern__ because when I want to create a new achievement, I just need to replay past events.
 And also because __Eventsourcing__ is a pretty good pattern in case of debug, data, etc.
 
 ## Infrastructure
@@ -31,10 +31,21 @@ cd ..
 You have in the boostrap an ELK stack, I don't have time to implements application logs for the test, but Moleculer give us metrics to monitor all the services/actions.
 You can use grafana with a moleculer dashboard too.
 
-You can monitor the go in runtime :
+You can monitor the go in runtime, but you need to configure grafana.  
 
-- Dashbord here : https://grafana.docker.localhost/
-- Help to implement: https://stackoverflow.com/questions/24863164/how-to-analyze-golang-memory
+```sh
+https://grafana.docker.localhost/
+```
+
+Set up interaction between Grafana and InfluxDB Grafana (Grafana main page -> Top left corner -> Datasources -> Add new datasource):
+
+![](https://i.stack.imgur.com/7o7VR.png)
+
+Import dashboard #3242 from https://grafana.com (Grafana main page -> Top left corner -> Dashboard -> Import):
+
+![](https://i.stack.imgur.com/ZyHlx.png)
+
+Finally, launch your application: it will transmit runtime metrics to the contenerized Influxdb.
 
 #### Real stress test on 100 games played auto
 ![stress test](https://raw.githubusercontent.com/gperreymond/osmo-coding-challenge/master/osmo-stress-test-100.png?token=AAVKRIIT7G5HWAWXGRQNJGK5O634C)
