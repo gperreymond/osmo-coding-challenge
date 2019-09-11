@@ -45,6 +45,25 @@ func Initialize() {
 	bkr.Stop()
 }
 
+// StatsPlayer ...
+func StatsPlayer(aggregateID string) {
+	bkr := broker.New(&moleculer.Config{
+		Transporter: "nats://nats.docker.localhost:4222",
+		LogLevel:    "info",
+		Metrics:     true,
+	})
+	bkr.Start()
+	time.Sleep(time.Millisecond * 1000)
+	// Play a game
+	res := <-bkr.Call("Player.AggregateStats", map[string]interface{}{
+		"AggregateID": aggregateID,
+	})
+	if res.IsError() {
+		log.Println(res.Error())
+	}
+	bkr.Stop()
+}
+
 // PlayGame ...
 func PlayGame() {
 	bkr := broker.New(&moleculer.Config{
@@ -70,6 +89,8 @@ func main() {
 		os.Exit(1)
 	}
 	switch arg {
+	case "--stats-player":
+		StatsPlayer(os.Args[2])
 	case "--play-game":
 		PlayGame()
 	case "--initialize":
