@@ -1,5 +1,21 @@
 # OSMO Coding Challenge
 
+## Architecture
+
+Based on a solid experience with __moleculer__ for my current company.
+- https://moleculer.services/
+
+I decided to try the golang version (currently in progress), but fully compatible with the test.
+- https://moleculer-go-site.herokuapp.com/
+
+Due to the lack of time, I implemented a very very light version of CQRS/ES.
+To be honest it's more than a start, than a full version, but you know what I mean.
+
+I just want to demonstrate how I will make the architecture if I had to begin such a big project.
+
+I don't use an __Observer Pattern__ because when I want to create a new achievment, I just need to replay past events.
+And also because __Eventsourcing__ is a pretty good pattern in case of debug, data, etc.
+
 ## Infrastructure
 
 Read the README in __infra__ directory for infrastructure details.
