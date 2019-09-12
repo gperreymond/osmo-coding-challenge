@@ -79,3 +79,28 @@ names := []string{"Thrall", "Rexxar", "Gul'Dan", "Malfurion", "Garrosh", "Uther"
 
 __Nota__   
 We could add some arguments to start only selected microservices. This is a better approch for scalabilty.
+
+## Achievements
+
+__RethinkDB__ is a powerfull database for map reducers, aggregate data, etc.  
+For the test I used this one, at the moment I look closely __Couchbase__.
+
+#### “Bruiser” Award
+A user receives this for doing more than 500 points of damage in one game
+
+The __RethinkDB__ query:
+
+```js
+r.db("osmo").table("eventstore")
+.filter({
+  "AggregateID":  "b3053a78-1b9f-4000-b6ed-70d9ca9b64a4",
+  "AggregateType":  "Player",
+  "EventType":  "TotalAmountOfDamageDoneUpdated"
+})
+.map(function(val) {
+  return val("Data")
+})
+.without(["AggregateID", "Game"])
+.sum("TotalAmountOfDamageDone")
+.gt(500);
+```

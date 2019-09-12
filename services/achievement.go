@@ -4,7 +4,6 @@ import (
 	"errors"
 	"log"
 
-	"github.com/gperreymond/osmo-coding-challenge/store"
 	"github.com/moleculer-go/moleculer"
 )
 
@@ -36,8 +35,8 @@ var AchievementService = moleculer.ServiceSchema{
 				aggregateType := params.Get("AggregateType").String()
 				eventType := params.Get("EventType").String()
 				log.Println(aggregateID, aggregateType, eventType)
-				res := store.AggregateByEventType(params)
-				log.Println(res)
+				//res := store.AggregateByEventType(params)
+				// log.Println(res)
 				return map[string]interface{}{
 					"Done": true,
 				}

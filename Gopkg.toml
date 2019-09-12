@@ -11,10 +11,6 @@
   version = "1.0.0"
 
 [[constraint]]
-  name = "go.mongodb.org/mongo-driver"
-  version = "1.1.1"
-
-[[constraint]]
   name = "github.com/jinzhu/gorm"
   version = "1.9.10"
 
@@ -25,3 +21,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/tevjef/go-runtime-metrics"
+
+[[constraint]]
+  name = "gopkg.in/rethinkdb/rethinkdb-go.v5"
+  version = "5.0.1"

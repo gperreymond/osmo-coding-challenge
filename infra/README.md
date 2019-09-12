@@ -20,14 +20,16 @@ You need to finish the postgres installation, not so long don't worry :)
 
 - Create a new database: __osmo__
 
-You need to finish the mongo installation, not so long don't worry :)
+You need to finish the rethinkdb installation, not so long don't worry :)
 
 ```sh
-https://mongo-express.docker.localhost
+https://rethinkdb.docker.localhost/
 ```
 
 - Create a new database: __osmo__
-- Create a new collection: __eventstore__
+- Create a new table: __eventstore__
+
+![rethinkdb](rethinkdb.png?raw=true)
 
 __Infrastructure is ready!__
 
@@ -41,7 +43,7 @@ __Infrastructure is ready!__
 
 - rabbitmq: https://portainer.docker.localhost
 - nats: https://nats.docker.localhost
-- mongodb: https://mongo-express.docker.localhost
+- rethinkdb: https://rethinkdb.docker.localhost
 - logstash
 - elasticsearch
 

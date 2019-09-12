@@ -39,9 +39,9 @@ func Initialize() {
 	// Create the players
 	names := []string{"Thrall", "Rexxar", "Gul'Dan", "Malfurion", "Garrosh", "Uther", "Anduin", "Valeera", "Morgl", "Medivh"}
 	for _, name := range names {
-		bkr.Call("Player.Create", map[string]interface{}{
+		bkr.Call("Player.Create", payload.New(map[string]string{
 			"Name": name,
-		})
+		}))
 	}
 	bkr.Stop()
 }
@@ -56,11 +56,11 @@ func AchievementsPlayer(aggregateID string) {
 	bkr.Start()
 	time.Sleep(time.Millisecond * 1000)
 	// Control all Achievement for a player
-	res := <-bkr.Call("Achievement.ControlBruiserAward", map[string]interface{}{
+	res := <-bkr.Call("Achievement.ControlBruiserAward", payload.New(map[string]string{
 		"AggregateID":   aggregateID,
 		"AggregateType": "Player",
 		"EventType":     "TotalAmountOfDamageDoneUpdated",
-	})
+	}))
 	if res.IsError() {
 		log.Println(res.Error())
 	}

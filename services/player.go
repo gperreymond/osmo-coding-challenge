@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres" // ...
 	"github.com/moleculer-go/moleculer"
+	"github.com/moleculer-go/moleculer/payload"
 )
 
 // PlayerService ...
@@ -125,11 +126,11 @@ var PlayerService = moleculer.ServiceSchema{
 					return err
 				}
 				// Emit Event on bus
-				ctx.Emit("Player.Created", map[string]interface{}{
+				ctx.Emit("Player.Created", payload.New(map[string]string{
 					"Name":        name,
 					"AggregateID": aggregateID,
-				})
-				return map[string]interface{}{
+				}))
+				return map[string]bool{
 					"Done": true,
 				}
 			},

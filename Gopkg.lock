@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/cenkalti/backoff"
+  packages = ["."]
+  revision = "4b4cebaf850ec58f1bb1fec5bdebdf8501c2bc3f"
+  version = "v3.0.0"
+
+[[projects]]
   name = "github.com/go-stack/stack"
   packages = ["."]
   revision = "2fee6af1a9795aafbe0253a0cfbdf668e1fb8a9a"
@@ -14,10 +20,16 @@
   version = "v1.3.0"
 
 [[projects]]
+  name = "github.com/golang/protobuf"
+  packages = ["proto"]
+  revision = "6c65a5562fc06764971b7c5d05c76c75e84bdbf7"
+  version = "v1.3.2"
+
+[[projects]]
   branch = "master"
-  name = "github.com/golang/snappy"
+  name = "github.com/hailocab/go-hostpool"
   packages = ["."]
-  revision = "ff6b7dc882cf4cfba7ee0b9f7dcc1ac096c554aa"
+  revision = "e80d13ce29ede4452c43dea11e79b9bc8a15b478"
 
 [[projects]]
   name = "github.com/influxdata/influxdb"
@@ -92,6 +104,12 @@
   version = "1.0.0"
 
 [[projects]]
+  name = "github.com/opentracing/opentracing-go"
+  packages = [".","ext","log"]
+  revision = "659c90643e714681897ec2521c60567dd21da733"
+  version = "v1.1.0"
+
+[[projects]]
   name = "github.com/pkg/errors"
   packages = ["."]
   revision = "ba968bfe8b2f7e042a574c888954fccecfa385b4"
@@ -140,20 +158,8 @@
   version = "v1.0.4"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/xdg/scram"
-  packages = ["."]
-  revision = "7eeb5667e42c09cb51bf7b7c28aea8c56767da90"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/xdg/stringprep"
-  packages = ["."]
-  revision = "73f8eece6fdcd902c185bf651de50f3828bed5ed"
-
-[[projects]]
   name = "go.mongodb.org/mongo-driver"
-  packages = ["bson","bson/bsoncodec","bson/bsonrw","bson/bsontype","bson/primitive","event","internal","mongo","mongo/options","mongo/readconcern","mongo/readpref","mongo/writeconcern","tag","version","x/bsonx","x/bsonx/bsoncore","x/mongo/driver","x/mongo/driver/address","x/mongo/driver/auth","x/mongo/driver/auth/internal/gssapi","x/mongo/driver/connstring","x/mongo/driver/description","x/mongo/driver/dns","x/mongo/driver/operation","x/mongo/driver/session","x/mongo/driver/topology","x/mongo/driver/uuid","x/mongo/driver/wiremessage"]
+  packages = ["bson","bson/bsoncodec","bson/bsonrw","bson/bsontype","bson/primitive","x/bsonx/bsoncore"]
   revision = "c520d023af0a89aec8b7f97717b52da270df2c38"
   version = "v1.1.1"
 
@@ -165,9 +171,9 @@
 
 [[projects]]
   branch = "master"
-  name = "golang.org/x/sync"
-  packages = ["semaphore"]
-  revision = "112230192c580c3556b8cee6403af37a4fc5f28c"
+  name = "golang.org/x/net"
+  packages = ["context"]
+  revision = "24e19bdeb0f2d062d8e2640d50a7aaf2a7f80e7a"
 
 [[projects]]
   branch = "master"
@@ -176,14 +182,20 @@
   revision = "d223b2b6db03988709bac9e66576ad6ec0d83695"
 
 [[projects]]
-  name = "golang.org/x/text"
-  packages = ["internal/gen","internal/triegen","internal/ucd","transform","unicode/cldr","unicode/norm"]
-  revision = "342b2e1fbaa52c93f31447ad2c6abc048c63e475"
-  version = "v0.3.2"
+  name = "gopkg.in/fatih/pool.v2"
+  packages = ["."]
+  revision = "010e0b745d12eaf8426c95f9c3924d81dd0b668f"
+  version = "v2.0.0"
+
+[[projects]]
+  name = "gopkg.in/rethinkdb/rethinkdb-go.v5"
+  packages = [".","encoding","ql2","types"]
+  revision = "442075482543497ce5f159d3dea451dc43bd1c0a"
+  version = "v5.0.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ae645bebc91de43d39aec16967c3a9542063244eff37fb5cb84d2506ae5234f6"
+  inputs-digest = "ca06e74b34b3b52f0a3d0c29a3720b3f8ae675f8bb67a1410fd3f78d2f270be7"
   solver-name = "gps-cdcl"
   solver-version = 1
