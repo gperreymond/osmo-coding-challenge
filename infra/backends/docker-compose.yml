@@ -84,35 +84,20 @@ services:
     ports:
       - "5432:5432"
 
-  mongo:
-    image: "mongo:4.2"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: infra
-      MONGO_INITDB_ROOT_PASSWORD: infra
-      MONGO_INITDB_DATABASE: osmo
-    ports:
-      - "27017:27017"
-      - "27018:27018"
-    labels:
-      - "traefik.enable=false"
-    volumes:
-      - mg_osmo_data:/data/db
-    networks:
-      - traefik
-
-  mongo-express:
-    image: mongo-express
+  rethinkdb:
+    image: rethinkdb
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=mongo-express"
-      - "traefik.frontend.rule=Host:mongo-express.docker.localhost"
-      - "traefik.port=8081"
+      - "traefik.backend=rethinkdb"
+      - "traefik.frontend.rule=Host:rethinkdb.docker.localhost"
+      - "traefik.port=8080"
       - "traefik.docker.network=traefik"
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: infra
-      ME_CONFIG_MONGODB_ADMINPASSWORD: infra
+    volumes:
+      - rk_osmo_data:/data
     networks:
       - traefik
+    ports:
+      - "28015:28015"
 
   elasticsearch:
     build: ./elasticsearch/
@@ -155,7 +140,7 @@ services:
 
 volumes:
   es_osmo_data:
-  mg_osmo_data:
+  rk_osmo_data:
   pg_osmo_data:
 
 networks:
