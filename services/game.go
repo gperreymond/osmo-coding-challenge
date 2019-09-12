@@ -112,7 +112,9 @@ var GameService = moleculer.ServiceSchema{
 					"Duration":    duration,
 					"AggregateID": aggregateID,
 				})
-				return aggregateID
+				return map[string]interface{}{
+					"AggregateID": aggregateID,
+				}
 			},
 		},
 		{
@@ -141,7 +143,9 @@ var GameService = moleculer.ServiceSchema{
 					"StartedAt":   startedAt,
 					"AggregateID": aggregateID,
 				})
-				return aggregateID
+				return map[string]interface{}{
+					"AggregateID": aggregateID,
+				}
 			},
 		},
 		{
@@ -151,13 +155,13 @@ var GameService = moleculer.ServiceSchema{
 				log.Println("*********** ------------ ***********")
 				log.Println("*********** GAME STARTED ***********")
 				log.Println("*********** ------------ ***********")
-				res := <-ctx.Call("Game.Create", payload.Empty())
-				if res.IsError() {
-					ctx.Logger().Error(res.Error())
-					return res.Error()
+				game := <-ctx.Call("Game.Create", payload.Empty())
+				if game.IsError() {
+					ctx.Logger().Error(game.Error())
+					return game.Error()
 				}
-				log.Println("Game aggregateID:", res)
-				gameAggregateID := res
+				gameAggregateID := game.Get("AggregateID").String()
+				log.Println("Game aggregateID:", gameAggregateID)
 				// Get all players
 				db, err := gorm.Open("postgres", "host=localhost port=5432 user=infra dbname=osmo password=infra sslmode=disable")
 				if err != nil {
@@ -294,7 +298,7 @@ var GameService = moleculer.ServiceSchema{
 					// End of turn
 					currentTurn++
 				}
-				res = <-ctx.Call("Game.Finish", map[string]interface{}{
+				res := <-ctx.Call("Game.Finish", map[string]interface{}{
 					"AggregateID": gameAggregateID,
 				})
 				if res.IsError() {
@@ -304,7 +308,9 @@ var GameService = moleculer.ServiceSchema{
 				log.Println("*********** ------------- ***********")
 				log.Println("*********** GAME FINISHED ***********")
 				log.Println("*********** ------------- ***********")
-				return true
+				return map[string]interface{}{
+					"Done": true,
+				}
 			},
 		},
 	},

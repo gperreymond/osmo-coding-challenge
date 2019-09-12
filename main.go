@@ -22,6 +22,7 @@ func StartServices() {
 	bkr.Publish(
 		services.GetGame(),
 		services.GetPlayer(),
+		services.GetAchievement(),
 	)
 	bkr.Start()
 }
@@ -45,8 +46,8 @@ func Initialize() {
 	bkr.Stop()
 }
 
-// StatsPlayer ...
-func StatsPlayer(aggregateID string) {
+// AchievementsPlayer ...
+func AchievementsPlayer(aggregateID string) {
 	bkr := broker.New(&moleculer.Config{
 		Transporter: "nats://nats.docker.localhost:4222",
 		LogLevel:    "info",
@@ -54,13 +55,16 @@ func StatsPlayer(aggregateID string) {
 	})
 	bkr.Start()
 	time.Sleep(time.Millisecond * 1000)
-	// Play a game
-	res := <-bkr.Call("Player.AggregateStats", map[string]interface{}{
-		"AggregateID": aggregateID,
+	// Control all Achievement for a player
+	res := <-bkr.Call("Achievement.ControlBruiserAward", map[string]interface{}{
+		"AggregateID":   aggregateID,
+		"AggregateType": "Player",
+		"EventType":     "TotalAmountOfDamageDoneUpdated",
 	})
 	if res.IsError() {
 		log.Println(res.Error())
 	}
+	log.Println(res)
 	bkr.Stop()
 }
 
@@ -89,8 +93,8 @@ func main() {
 		os.Exit(1)
 	}
 	switch arg {
-	case "--stats-player":
-		StatsPlayer(os.Args[2])
+	case "--achievements-player":
+		AchievementsPlayer(os.Args[2])
 	case "--play-game":
 		PlayGame()
 	case "--initialize":
@@ -99,5 +103,8 @@ func main() {
 		StartServices()
 		// small hack to make the process run forever
 		select {}
+	default:
+		log.Println("This mode is not allowed:", arg)
+		os.Exit(0)
 	}
 }

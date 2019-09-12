@@ -43,23 +43,34 @@ func Collection() (*mongo.Client, *mongo.Collection, error) {
 	return conn, collection, nil
 }
 
-// Aggregate ...
-func Aggregate(params moleculer.Payload) error {
+// AggregateByEventType ...
+func AggregateByEventType(params moleculer.Payload) error {
 	ctx := context.TODO()
 	// AggregateID is mandatory
 	if params.Get("AggregateID").Exists() == false {
 		return errors.New("AggregateID is mandatory")
 	}
+	// AggregateType is mandatory
+	if params.Get("AggregateType").Exists() == false {
+		return errors.New("AggregateType is mandatory")
+	}
+	// EventType is mandatory
+	if params.Get("EventType").Exists() == false {
+		return errors.New("EventType is mandatory")
+	}
 	aggregateID := params.Get("AggregateID").String()
+	aggregateType := params.Get("AggregateType").String()
+	eventType := params.Get("EventType").String()
 	conn, collection, err := Collection()
 	if err != nil {
 		return err
 	}
 	filter := bson.D{
 		{Key: "aggregate_id", Value: aggregateID},
+		{Key: "aggregate_type", Value: aggregateType},
+		{Key: "event_type", Value: eventType},
 	}
-	var items []Event
-	err = collection.Find(ctx, filter).Sort("-created_at").All(&items)
+	cursor, err := collection.Find(ctx, filter)
 	if err != nil {
 		return err
 	}

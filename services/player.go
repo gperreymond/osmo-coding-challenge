@@ -93,14 +93,6 @@ var PlayerService = moleculer.ServiceSchema{
 	},
 	Actions: []moleculer.Action{
 		{
-			Name: "AggregateStats",
-			Handler: func(ctx moleculer.Context, params moleculer.Payload) interface{} {
-				ctx.Logger().Info("params: ", params)
-				store.Aggregate(params)
-				return true
-			},
-		},
-		{
 			Name: "Create",
 			Handler: func(ctx moleculer.Context, params moleculer.Payload) interface{} {
 				ctx.Logger().Info("params: ", params)
@@ -126,7 +118,9 @@ var PlayerService = moleculer.ServiceSchema{
 					"Name":        name,
 					"AggregateID": aggregateID,
 				})
-				return true
+				return map[string]interface{}{
+					"Done": true,
+				}
 			},
 		},
 	},
