@@ -23,6 +23,7 @@ type PlayerInGame struct {
 	AggregateID              string
 	Name                     string
 	Life                     int
+	Loose                    bool
 	NumberOfAttemptedAttacks int
 	NumberOfHits             int
 	TotalAmountOfDamageDone  int
@@ -91,6 +92,8 @@ var GameService = moleculer.ServiceSchema{
 			Handler: func(ctx moleculer.Context, params moleculer.Payload) interface{} {
 				ctx.Logger().Info("params: ", params)
 				aggregateID := params.Get("AggregateID").String()
+				players := params.Get("Players").Bson()
+				reporting, ok := players.([]PlayerInGame)
 				db, err := gorm.Open("postgres", "host=localhost port=5432 user=infra dbname=osmo password=infra sslmode=disable")
 				if err != nil {
 					ctx.Logger().Error(err)
@@ -98,22 +101,48 @@ var GameService = moleculer.ServiceSchema{
 				}
 				defer db.Close()
 				// Update a game in postgres
-				duration := int64(gubrak.RandomInt(15, 30)) // From 15 to 30 minutes for one game
-				finishedAt := time.Now().UTC().Add(15 * time.Minute)
-				game := models.Game{StartedAt: finishedAt, AggregateID: aggregateID}
-				err = db.Model(&game).Where("aggregate_id = ?", aggregateID).Updates(map[string]interface{}{"finishedAt": finishedAt, "duration": duration}).Error
+				duration := int64(gubrak.RandomInt(15, 30))
+				game := models.Game{}
+				err = db.Model(&game).Where("aggregate_id = ?", aggregateID).Updates(map[string]interface{}{}).Error
 				if err != nil {
 					ctx.Logger().Error(err)
 					return err
 				}
 				// Emit Event on bus
 				ctx.Emit("Game.FinishUpdated", map[string]interface{}{
-					"FinishedAt":  finishedAt,
-					"Duration":    duration,
 					"AggregateID": aggregateID,
+					"Duration":    duration,
+					"Players":     players,
 				})
+
+				/* for _, p := range *players {
+					// Emit Event on bus
+					ctx.Emit("Player.GameLooseFinished", map[string]interface{}{
+						"Game":        aggregateID,
+						"AggregateID": p.AggregateID,
+					})
+					// Emit Event on bus
+					ctx.Emit("Player.TotalAmountOfDamageDoneUpdated", map[string]interface{}{
+						"Game":                    aggregateID,
+						"AggregateID":             p.AggregateID,
+						"TotalAmountOfDamageDone": p.TotalAmountOfDamageDone,
+					})
+					// Emit Event on bus
+					ctx.Emit("Player.NumberOfFirstHitKillsUpdated", map[string]interface{}{
+						"Game":                  aggregateID,
+						"AggregateID":           p.AggregateID,
+						"NumberOfFirstHitKills": p.NumberOfFirstHitKills,
+					})
+					// Emit Event on bus
+					ctx.Emit("Player.NumberOfKillsUpdated", map[string]interface{}{
+						"Game":          aggregateID,
+						"AggregateID":   p.AggregateID,
+						"NumberOfKills": p.NumberOfKills,
+					})
+				} */
 				return map[string]interface{}{
 					"AggregateID": aggregateID,
+					"Duration":    duration,
 				}
 			},
 		},
@@ -171,6 +200,7 @@ var GameService = moleculer.ServiceSchema{
 				defer db.Close()
 				var players []models.Player
 				var pool []PlayerInGame
+				var reporting []PlayerInGame
 				db.Find(&players)
 				for _, p := range players {
 					inGame := PlayerInGame{
@@ -229,24 +259,18 @@ var GameService = moleculer.ServiceSchema{
 					currentPlayer, loose := GetRandomAlivePlayerInTeam(*currentTeam)
 					log.Println("... Choose current target player")
 					currentTargetPlayer, _ := GetRandomAlivePlayerInTeam(*currentTargetTeam)
-					// Loose ?
+					// Loose ? Then emit all events
 					if loose == true {
 						for _, p := range *currentTeam {
 							teamWLosersNames += p.Name + ", "
-							// Emit Event on bus
-							ctx.Emit("Player.GameLooseFinished", map[string]interface{}{
-								"Game":        gameAggregateID,
-								"AggregateID": p.AggregateID,
-							})
+							p.Loose = true
+							reporting = append(reporting, p)
 						}
 						log.Println("Losers:", teamWLosersNames)
 						for _, p := range *currentTargetTeam {
 							teamWinnersNames += p.Name + ", "
-							// Emit Event on bus
-							ctx.Emit("Player.GameWonFinished", map[string]interface{}{
-								"Game":        gameAggregateID,
-								"AggregateID": p.AggregateID,
-							})
+							p.Loose = false
+							reporting = append(reporting, p)
 						}
 						log.Println("Winners:", teamWinnersNames)
 						break
@@ -263,35 +287,17 @@ var GameService = moleculer.ServiceSchema{
 					} else {
 						log.Println("... Attack:", currentPlayer.Name, "hits", damage, "damage to", currentTargetPlayer.Name)
 						currentPlayer.TotalAmountOfDamageDone += damage
-						// Emit Event on bus
-						ctx.Emit("Player.TotalAmountOfDamageDoneUpdated", map[string]interface{}{
-							"Game": gameAggregateID,
-							"TotalAmountOfDamageDone": damage,
-							"AggregateID":             currentPlayer.AggregateID,
-						})
-						currentTargetPlayer.Life -= currentPlayer.TotalAmountOfDamageDone
+						currentTargetPlayer.Life -= damage
 						if currentTargetPlayer.Life < 0 {
 							currentTargetPlayer.Life = 0
 						}
 					}
 					if currentTargetPlayer.Life == 0 {
 						currentPlayer.NumberOfKills++
-						// Emit Event on bus
-						ctx.Emit("Player.NumberOfKillsUpdated", map[string]interface{}{
-							"Game":          gameAggregateID,
-							"NumberOfKills": 1,
-							"AggregateID":   currentPlayer.AggregateID,
-						})
 						// First kill in the game
 						if firstHitKills == false {
 							log.Println("... ", currentPlayer.Name, "made first kill")
-							currentPlayer.NumberOfFirstHitKills++
-							// Emit Event on bus
-							ctx.Emit("Player.NumberOfFirstHitKillsUpdated", map[string]interface{}{
-								"Game":                  gameAggregateID,
-								"NumberOfFirstHitKills": 1,
-								"AggregateID":           currentPlayer.AggregateID,
-							})
+							currentPlayer.NumberOfFirstHitKills = 1
 							firstHitKills = true
 						}
 					}
@@ -300,6 +306,7 @@ var GameService = moleculer.ServiceSchema{
 				}
 				res := <-ctx.Call("Game.Finish", map[string]interface{}{
 					"AggregateID": gameAggregateID,
+					"Players":     reporting,
 				})
 				if res.IsError() {
 					ctx.Logger().Error(res.Error())

@@ -80,6 +80,17 @@ var PlayerService = moleculer.ServiceSchema{
 			},
 		},
 		{
+			Name: "Player.TotalTimePlayedUpdated",
+			Handler: func(ctx moleculer.Context, params moleculer.Payload) {
+				ctx.Logger().Info("params: ", params)
+				// Save Event to store
+				err := store.InsertEvent("Player", "TotalTimePlayedUpdated", params)
+				if err != nil {
+					ctx.Logger().Error(err)
+				}
+			},
+		},
+		{
 			Name: "Player.Created",
 			Handler: func(ctx moleculer.Context, params moleculer.Payload) {
 				ctx.Logger().Info("params: ", params)
