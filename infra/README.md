@@ -5,11 +5,6 @@ First time ELK stack is created, it could be long, because these three component
 
 ## Prepare your computer
 
-#### Troubles with elasticsearch
-
-- sudo sysctl -w vm.max_map_count=262144
-- sudo sysctl -w fs.file-max=65536
-
 #### Docker engines
 
 Having __docker__ and __docker-compose__ ready to use.
@@ -44,13 +39,10 @@ __Infrastructure is ready!__
 - rabbitmq: https://portainer.docker.localhost
 - nats: https://nats.docker.localhost
 - rethinkdb: https://rethinkdb.docker.localhost
-- logstash
-- elasticsearch
 
 #### Frontends
 
 - grafana : https://grafana.docker.localhost
-- kibana (elk webui): https://kibana.docker.localhost
 
 ## Usages
 

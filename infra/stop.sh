@@ -8,6 +8,6 @@ echo "Localhost IP: ${MY_IP}"
 
 export IP_LOCALHOST=$MY_IP
 
-docker-compose down
-docker-compose -f backends/docker-compose.yml down
-docker-compose -f frontends/docker-compose.yml down
+docker-compose down --remove-orphans
+docker-compose -f backends/docker-compose.yml down --remove-orphans
+docker-compose -f frontends/docker-compose.yml down --remove-orphans

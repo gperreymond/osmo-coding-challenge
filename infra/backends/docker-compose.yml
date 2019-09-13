@@ -99,47 +99,7 @@ services:
     ports:
       - "28015:28015"
 
-  elasticsearch:
-    build: ./elasticsearch/
-    environment:
-      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
-    ulimits:
-      nofile:
-        soft: 65535
-        hard: 65535
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - es_osmo_data:/usr/share/elasticsearch/data
-    networks:
-      - traefik
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=elasticsearch"
-      - "traefik.frontend.rule=Host:elasticsearch.docker.localhost"
-      - "traefik.port=9200"
-      - "traefik.docker.network=traefik"
-
-  logstash:
-    build: ./logstash/
-    volumes:
-      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
-      - ./logstash/pipeline:/usr/share/logstash/pipeline
-    environment:
-      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-    depends_on:
-      - elasticsearch
-    labels:
-      - "traefik.enable=false"
-    networks:
-      - traefik
-    ports:
-      - "5000:5000"
-      - "9600:9600"
-
 volumes:
-  es_osmo_data:
   rk_osmo_data:
   pg_osmo_data:
 
