@@ -50,6 +50,17 @@ Finally, launch your application: it will transmit runtime metrics to the conten
 #### Real stress test on 100 games played auto
 ![stress test](osmo-stress-test-100.png?raw=true)
 
+## Tests unit / integration
+
+- https://github.com/onsi/ginkgo
+
+```sh
+go get -u github.com/onsi/ginkgo/ginkgo  # installs the ginkgo CLI
+go get -u github.com/onsi/gomega/...     # fetches the matcher library
+
+ginkgo -r -v -cover
+```
+
 ## How to use
 
 #### Build the binary

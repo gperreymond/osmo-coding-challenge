@@ -1,5 +1,5 @@
 vendor/
+coverage/
 
-c.out
-coverage.html
+*.coverprofile
 main
