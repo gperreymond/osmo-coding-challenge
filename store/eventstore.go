@@ -9,22 +9,41 @@ import (
 	r "gopkg.in/rethinkdb/rethinkdb-go.v5"
 )
 
+// Config ...
+type Config struct {
+	Address  string
+	Database string
+}
+
+var configStore Config
+
+// SetConfigStore ...
+func SetConfigStore(value Config) {
+	configStore = value
+}
+
 // InsertEvent ...
 func InsertEvent(aggregateType string, eventType string, params moleculer.Payload) error {
 	log.Println("Store InsertEvent", params)
+	if configStore.Address == "" {
+		configStore = Config{
+			Address:  "localhost:28015",
+			Database: "osmo",
+		}
+	}
 	// AggregateID is mandatory
 	if params.Get("AggregateID").Exists() == false {
 		return errors.New("AggregateID is mandatory")
 	}
 	aggregateID := params.Get("AggregateID").String()
 	session, err := r.Connect(r.ConnectOpts{
-		Address:  "localhost:28015",
-		Database: "osmo",
+		Address:  configStore.Address,
+		Database: configStore.Database,
 	})
+	defer session.Close()
 	if err != nil {
 		return err
 	}
-	defer session.Close()
 	e := Event{
 		AggregateID:   aggregateID,
 		AggregateType: aggregateType,
@@ -32,11 +51,8 @@ func InsertEvent(aggregateType string, eventType string, params moleculer.Payloa
 		CreatedAt:     time.Now().UTC(),
 		Data:          params.Bson(),
 	}
-	err = r.Table("eventstore").Insert(e).Exec(session, r.ExecOpts{
+	_ = r.Table("eventstore").Insert(e).Exec(session, r.ExecOpts{
 		NoReply: true,
 	})
-	if err != nil {
-		return err
-	}
 	return nil
 }
