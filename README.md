@@ -59,13 +59,13 @@ dep ensure
 go build main.go
 ```
 
-#### Initialize first players
+#### Initializing
 
-Only one time stuff, to add the players in postgres.
+Only one time stuff:
 
-```c
-names := []string{"Thrall", "Rexxar", "Gul'Dan", "Malfurion", "Garrosh", "Uther", "Anduin", "Valeera", "Morgl", "Medivh"}
-```
+- Create __Postgres__ database
+- Create __RethinkDB__ database
+- Add the players in postgres.
 
 ```sh
 ./main --initialize
@@ -80,10 +80,17 @@ names := []string{"Thrall", "Rexxar", "Gul'Dan", "Malfurion", "Garrosh", "Uther"
 __Nota__   
 We could add some arguments to start only selected microservices. This is a better approch for scalabilty.
 
-## Achievements
+## Achievements
 
 __RethinkDB__ is a powerfull database for map reducers, aggregate data, etc.  
 For the test I used this one, at the moment I look closely __Couchbase__.
+
+#### “Veteran” Award
+A user receives this for playing more than 1000 games in their lifetime.
+
+The __RethinkDB__ query:
+```js
+```
 
 #### “Bruiser” Award
 A user receives this for doing more than 500 points of damage in one game
