@@ -80,34 +80,79 @@ Only one time stuff:
 __Nota__   
 We could add some arguments to start only selected microservices. This is a better approch for scalabilty.
 
+## Games
+
+You can play 100 games in a row, around 3 minutes execution per 100 games.
+
+```sh
+./playGames.sh
+```
+Or play only one:
+
+```sh
+./main --play-game
+```
+
 ## Achievements
 
 __RethinkDB__ is a powerfull database for map reducers, aggregate data, etc.  
 For the test I used this one, but I look closely __Couchbase__ to replace it.
+
+#### “Sharpshooter Award”
+A user receives this for landing 75% of their attacks, assuming they have at least attacked once.
+
+The __RethinkDB__ query:
+
+```js
+```
+
+####  “Big Winner” Award
+A user receives this for having 200 wins
+
+The __RethinkDB__ query:
+```js
+r.db("osmo").table("eventstore")
+.filter({
+  "AggregateID":  "<INSERT AggregateID of a player>",
+  "AggregateType":  "Player",
+  "EventType": "GameWonFinished"
+})
+.count()
+.gt(200);
+```
 
 #### “Veteran” Award
 A user receives this for playing more than 1000 games in their lifetime.
 
 The __RethinkDB__ query:
 ```js
+r.db("osmo").table("eventstore")
+.filter({
+  "AggregateID":  "<INSERT AggregateID of a player>",
+  "AggregateType":  "Player",
+  "EventType": "GameStarted"
+})
+.count()
+.gt(1000);
 ```
 
 #### “Bruiser” Award
 A user receives this for doing more than 500 points of damage in one game
 
+This is one is little bit tricky, you have to map/reduce on "TotalAmountOfDamageDone" per "Game".  
 The __RethinkDB__ query:
 
 ```js
 r.db("osmo").table("eventstore")
 .filter({
-  "AggregateID":  "b3053a78-1b9f-4000-b6ed-70d9ca9b64a4",
+  "AggregateID":  "<INSERT AggregateID of a player>",
   "AggregateType":  "Player",
   "EventType":  "TotalAmountOfDamageDoneUpdated"
 })
 .map(function(val) {
-  return val("Data")
+  return { "control": val("Data")("TotalAmountOfDamageDone").gt(1000) }
 })
-.without(["AggregateID", "Game"])
-.sum("TotalAmountOfDamageDone")
-.gt(500);
+.group("control").ungroup()
+.filter({ "group": true })
+.count();
 ```

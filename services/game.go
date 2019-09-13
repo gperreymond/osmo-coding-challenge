@@ -35,12 +35,6 @@ type PlayerInGame struct {
 	TotalTimePlayed          int
 }
 
-// PayloadGameFinish ...
-type PayloadGameFinish struct {
-	AggregateID string
-	Players     []PlayerInGame
-}
-
 // GetRandomAlivePlayerInTeam ...
 func GetRandomAlivePlayerInTeam(team []PlayerInGame) (*PlayerInGame, bool) {
 	loose := true
@@ -152,6 +146,16 @@ var GameService = moleculer.ServiceSchema{
 						"Game":          aggregateID,
 						"AggregateID":   participant.AggregateID,
 						"NumberOfKills": participant.NumberOfKills,
+					})
+					ctx.Emit("Player.NumberOfHitsUpdated", map[string]interface{}{
+						"Game":         aggregateID,
+						"AggregateID":  participant.AggregateID,
+						"NumberOfHits": participant.NumberOfHits,
+					})
+					ctx.Emit("Player.NumberOfAttemptedAttacksUpdated", map[string]interface{}{
+						"Game":                     aggregateID,
+						"AggregateID":              participant.AggregateID,
+						"NumberOfAttemptedAttacks": participant.NumberOfAttemptedAttacks,
 					})
 				}
 				return map[string]interface{}{
@@ -293,13 +297,14 @@ var GameService = moleculer.ServiceSchema{
 						log.Println("... CurrentTargetPlayer", currentTargetPlayer.Name, "has", currentTargetPlayer.Life, "life")
 					}
 					// Attack
-					currentPlayer.NumberOfAttemptedAttacks++
 					damage := gubrak.RandomInt(1, 10) + gubrak.RandomInt(1, 10)
 					miss := gubrak.RandomInt(1, 100)
+					currentPlayer.NumberOfAttemptedAttacks++
 					if miss <= 20 {
 						log.Println("... Attack:", currentPlayer.Name, "miss", currentTargetPlayer.Name)
 					} else {
 						log.Println("... Attack:", currentPlayer.Name, "hits", damage, "damage to", currentTargetPlayer.Name)
+						currentPlayer.NumberOfHits++
 						currentPlayer.TotalAmountOfDamageDone += damage
 						currentTargetPlayer.Life -= damage
 						if currentTargetPlayer.Life < 0 {
