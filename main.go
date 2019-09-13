@@ -38,7 +38,7 @@ func Initialize() {
 		log.Println(err)
 		os.Exit(1)
 	}
-	// db.Exec("CREATE DATABASE osmo")
+	db.Exec("CREATE DATABASE osmo")
 	// Initialize Rethinkdb
 	session, err := r.Connect(r.ConnectOpts{
 		Address:  "localhost:28015",
