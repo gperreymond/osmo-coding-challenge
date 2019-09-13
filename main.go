@@ -6,10 +6,12 @@ import (
 	"time"
 
 	"github.com/gperreymond/osmo-coding-challenge/services"
+	"github.com/jinzhu/gorm"
 	"github.com/moleculer-go/moleculer"
 	"github.com/moleculer-go/moleculer/broker"
 	"github.com/moleculer-go/moleculer/payload"
 	metrics "github.com/tevjef/go-runtime-metrics"
+	r "gopkg.in/rethinkdb/rethinkdb-go.v5"
 )
 
 // StartServices ...
@@ -29,6 +31,26 @@ func StartServices() {
 
 // Initialize ...
 func Initialize() {
+	// Initialize Postgres
+	db, err := gorm.Open("postgres", "host=localhost port=5432 dbname=postgres user=infra password=infra sslmode=disable")
+	defer db.Close()
+	if err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
+	// db.Exec("CREATE DATABASE osmo")
+	// Initialize Rethinkdb
+	session, err := r.Connect(r.ConnectOpts{
+		Address:  "localhost:28015",
+		Database: "osmo",
+	})
+	defer session.Close()
+	if err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
+	r.DBCreate("osmo").Exec(session)
+	r.DB("osmo").TableCreate("eventstore").Exec(session)
 	bkr := broker.New(&moleculer.Config{
 		Transporter: "nats://nats.docker.localhost:4222",
 		LogLevel:    "info",

@@ -1,32 +1,12 @@
 # Osmo Development Bootstrap
 
-Nerd stuff - Launch Osmo production on your local station w/ Docker.  
-First time ELK stack is created, it could be long, because these three components have to be build from docker files.
+Nerd stuff - Launch Osmo production on your local station w/ Docker.
 
 ## Prepare your computer
 
 #### Docker engines
 
 Having __docker__ and __docker-compose__ ready to use.
-
-## First time running
-
-You need to finish the postgres installation, not so long don't worry :)
-
-- Create a new database: __osmo__
-
-You need to finish the rethinkdb installation, not so long don't worry :)
-
-```sh
-https://rethinkdb.docker.localhost/
-```
-
-- Create a new database: __osmo__
-- Create a new table: __eventstore__
-
-![rethinkdb](rethinkdb.png?raw=true)
-
-__Infrastructure is ready!__
 
 ## Listing of infrastructure components
 
@@ -39,6 +19,7 @@ __Infrastructure is ready!__
 - rabbitmq: https://portainer.docker.localhost
 - nats: https://nats.docker.localhost
 - rethinkdb: https://rethinkdb.docker.localhost
+- postgres
 
 #### Frontends
 

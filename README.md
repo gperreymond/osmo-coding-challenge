@@ -2,23 +2,23 @@
 
 ## Architecture
 
-Based on a solid experience with __moleculer__ for my current company.
+Based on a solid experience with __moleculer__ used in my current company.
 - https://moleculer.services/
 
-I decided to try the golang version (currently in progress), but fully compatible with the test.
+I decided to try the golang version (currently in progress), but fully compatible with osmo test.
 - https://moleculer-go-site.herokuapp.com/
 
-Due to the lack of time, I implemented a very very light version of CQRS/ES.  
-With more time, in a real context of work, I will do more of course.
+Due to the lack of time, I implemented a very very light version of CQRS/ES ; With more time, in a real context of work, I will do more of course.
 
-I just want to demonstrate how I will make the architecture if I had to begin such a big project.
-
-I don't use an __Observer Pattern__ because when I want to create a new achievement, I just need to replay past events.
-And also because __Eventsourcing__ is a pretty good pattern in case of debug, data, etc.
+__Eventsourcing__ is better than __Observer Pattern__ for an achievement system.
+Because when I want to create a new achievement, I just need to replay past events.
+__Eventsourcing__ is also a pretty good pattern in case of debug, data, etc.
 
 ## Infrastructure
 
 Read the README in __infra__ directory for infrastructure details.
+
+__Nats__ is used as service discovery, and __rabbitmq__ if I need a state machine. This is a very good combo in microservices architectures.
 
 ```sh
 cd infra
@@ -28,10 +28,10 @@ cd ..
 
 ## Logs, Dashboards, Stress tests
 
-You have in the boostrap an ELK stack, I don't have time to implements application logs for the test, but Moleculer give us metrics to monitor all the services/actions.
-You can use grafana with a moleculer dashboard too.
+I don't have time to implements application logs for the test, but Moleculer give us metrics to monitor all the services/actions.
+Grafana dashboards for moleculer are just awesome.
 
-You can monitor the go in runtime, but you need to configure grafana.  
+You can also monitor the go in runtime, but you need to configure grafana.  
 
 ```sh
 https://grafana.docker.localhost/
@@ -83,7 +83,7 @@ We could add some arguments to start only selected microservices. This is a bett
 ## Achievements
 
 __RethinkDB__ is a powerfull database for map reducers, aggregate data, etc.  
-For the test I used this one, at the moment I look closely __Couchbase__.
+For the test I used this one, but I look closely __Couchbase__ to replace it.
 
 #### “Veteran” Award
 A user receives this for playing more than 1000 games in their lifetime.

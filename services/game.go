@@ -100,11 +100,11 @@ var GameService = moleculer.ServiceSchema{
 				aggregateID := params.Get("AggregateID").String()
 				players := params.Get("Players")
 				db, err := gorm.Open("postgres", "host=localhost port=5432 user=infra dbname=osmo password=infra sslmode=disable")
+				defer db.Close()
 				if err != nil {
 					ctx.Logger().Error(err)
 					return err
 				}
-				defer db.Close()
 				// **********************
 				// Update a game in postgres
 				// **********************
@@ -166,11 +166,11 @@ var GameService = moleculer.ServiceSchema{
 				ctx.Logger().Info("params: ", params)
 				aggregateID := utils.UUID()
 				db, err := gorm.Open("postgres", "host=localhost port=5432 user=infra dbname=osmo password=infra sslmode=disable")
+				defer db.Close()
 				if err != nil {
 					ctx.Logger().Error(err)
 					return err
 				}
-				defer db.Close()
 				// Migrate the schema
 				db.AutoMigrate(&models.Game{})
 				// Create a new game in postgres
@@ -207,11 +207,11 @@ var GameService = moleculer.ServiceSchema{
 				log.Println("Game aggregateID:", gameAggregateID)
 				// Get all players
 				db, err := gorm.Open("postgres", "host=localhost port=5432 user=infra dbname=osmo password=infra sslmode=disable")
+				defer db.Close()
 				if err != nil {
 					ctx.Logger().Error(err)
 					return err
 				}
-				defer db.Close()
 				var players []models.Player
 				var pool []PlayerInGame
 				var reporting []PlayerInGame

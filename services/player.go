@@ -111,11 +111,11 @@ var PlayerService = moleculer.ServiceSchema{
 				name := params.Get("Name").String()
 				aggregateID := utils.UUID()
 				db, err := gorm.Open("postgres", "host=localhost port=5432 user=infra dbname=osmo password=infra sslmode=disable")
+				defer db.Close()
 				if err != nil {
 					ctx.Logger().Error(err)
 					return err
 				}
-				defer db.Close()
 				// Migrate the schema
 				db.AutoMigrate(&models.Player{})
 				// Create a new user in postgres

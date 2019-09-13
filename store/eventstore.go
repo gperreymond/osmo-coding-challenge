@@ -31,10 +31,10 @@ func GetEvent(params moleculer.Payload) error {
 		Address:  "localhost:28015",
 		Database: "osmo",
 	})
+	defer session.Close()
 	if err != nil {
 		return err
 	}
-	defer session.Close()
 	type Filter struct {
 		AggregateID   string
 		AggregateType string
