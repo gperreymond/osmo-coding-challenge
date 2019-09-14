@@ -26,7 +26,7 @@ jobs:
 
       # specify any bash command here prefixed with `run: `
       - run: sudo apt update
-      - run: sudo apt install dep
+      - run: curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
       - run: go dep ensure
       - run: go build -o main.go
       - run: ./main --initialize
