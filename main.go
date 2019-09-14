@@ -56,6 +56,9 @@ func Initialize() {
 		LogLevel:    "info",
 		Metrics:     true,
 	})
+	bkr.Publish(
+		services.GetPlayer(),
+	)
 	bkr.Start()
 	time.Sleep(time.Millisecond * 1000)
 	// Create the players

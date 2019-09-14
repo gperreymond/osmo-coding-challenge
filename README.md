@@ -101,6 +101,8 @@ We could add some arguments to start only selected microservices. This is a bett
 
 ## Games
 
+On another CLI:
+
 You can play 100 games in a row, around 3 minutes execution per 100 games.
 
 ```sh
