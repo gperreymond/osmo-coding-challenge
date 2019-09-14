@@ -1,6 +1,6 @@
 # OSMO Coding Challenge
 
-[![Coverage Status](https://coveralls.io/repos/github/gperreymond/osmo-coding-challenge/badge.svg?branch=master)](https://coveralls.io/github/gperreymond/osmo-coding-challenge?branch=master)
+[![CircleCI](https://circleci.com/gh/gperreymond/osmo-coding-challenge.svg?style=shield)](https://circleci.com/gh/gperreymond/osmo-coding-challenge)[![Coverage Status](https://coveralls.io/repos/github/gperreymond/osmo-coding-challenge/badge.svg?branch=master)](https://coveralls.io/github/gperreymond/osmo-coding-challenge?branch=master)
 
 ## Architecture
 
