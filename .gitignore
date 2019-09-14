@@ -1,5 +1,7 @@
 vendor/
 coverage/
 
+coverage.sh
+coverage.txt
 *.coverprofile
 main

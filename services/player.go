@@ -1,6 +1,8 @@
 package services
 
 import (
+	"errors"
+
 	"github.com/gperreymond/osmo-coding-challenge/models"
 	"github.com/gperreymond/osmo-coding-challenge/store"
 	"github.com/gperreymond/osmo-coding-challenge/utils"
@@ -130,6 +132,10 @@ var PlayerService = moleculer.ServiceSchema{
 			Name: "Create",
 			Handler: func(ctx moleculer.Context, params moleculer.Payload) interface{} {
 				ctx.Logger().Info("params: ", params)
+				// AggregateID is mandatory
+				if params.Get("Name").Exists() == false {
+					return errors.New("Name is mandatory")
+				}
 				name := params.Get("Name").String()
 				aggregateID := utils.UUID()
 				db, err := gorm.Open("postgres", "host=localhost port=5432 user=infra dbname=osmo password=infra sslmode=disable")

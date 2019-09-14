@@ -1,5 +1,7 @@
 # OSMO Coding Challenge
 
+[![Coverage Status](https://coveralls.io/repos/github/gperreymond/osmo-coding-challenge/badge.svg?branch=master)](https://coveralls.io/github/gperreymond/osmo-coding-challenge?branch=master)
+
 ## Architecture
 
 Based on a solid experience with __moleculer__ used in my current company.
