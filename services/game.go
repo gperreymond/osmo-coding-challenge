@@ -32,7 +32,6 @@ type PlayerInGame struct {
 	NumberOfAssists          int
 	TotalNumberOfSpellsCast  int
 	TotalSpellDamageDone     int
-	TotalTimePlayed          int
 }
 
 // GetRandomAlivePlayerInTeam ...
@@ -132,6 +131,11 @@ var GameService = moleculer.ServiceSchema{
 							"Game":        aggregateID,
 						})
 					}
+					ctx.Emit("Player.TotalTimePlayedUpdated", map[string]interface{}{
+						"Game":                   aggregateID,
+						"AggregateID":            participant.AggregateID,
+						"TotalTimePlayedUpdated": duration,
+					})
 					ctx.Emit("Player.TotalAmountOfDamageDoneUpdated", map[string]interface{}{
 						"Game":                    aggregateID,
 						"AggregateID":             participant.AggregateID,

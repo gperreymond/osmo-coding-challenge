@@ -10,6 +10,7 @@ import (
 
 	models "github.com/gperreymond/osmo-coding-challenge/models"
 	. "github.com/gperreymond/osmo-coding-challenge/services"
+	"github.com/gperreymond/osmo-coding-challenge/store"
 )
 
 var _ = Describe("Service", func() {
@@ -69,6 +70,24 @@ var _ = Describe("Service", func() {
 		db.Unscoped().Where("name LIKE ?", "%test%").Delete(models.Player{})
 	})
 	It("should successfully play a game", func() {
+		bkr := broker.New(&moleculer.Config{
+			Transporter: "nats://localhost:4222",
+			LogLevel:    "fatal",
+			Metrics:     false,
+		})
+		bkr.Publish(
+			GetPlayer(),
+			GetGame(),
+		)
+		bkr.Start()
+		res := <-bkr.Call("Game.Play", payload.Empty())
+		Expect(res.IsError()).To(Equal(false))
+	})
+	It("should successfully play a game, without Rethinkdb (resilience)", func() {
+		store.SetConfigStore(store.Config{
+			Address:  "test:28015",
+			Database: "osmo",
+		})
 		bkr := broker.New(&moleculer.Config{
 			Transporter: "nats://localhost:4222",
 			LogLevel:    "fatal",
