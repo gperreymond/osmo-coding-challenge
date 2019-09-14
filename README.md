@@ -1,6 +1,6 @@
 # OSMO Coding Challenge
 
-[![CircleCI](https://circleci.com/gh/gperreymond/osmo-coding-challenge.svg?style=shield)](https://circleci.com/gh/gperreymond/osmo-coding-challenge) [![Coverage Status](https://coveralls.io/repos/github/gperreymond/osmo-coding-challenge/badge.svg?branch=master&kill_cache=1)](https://coveralls.io/github/gperreymond/osmo-coding-challenge?branch=master)
+[![CircleCI](https://circleci.com/gh/gperreymond/osmo-coding-challenge.svg?style=shield)](https://circleci.com/gh/gperreymond/osmo-coding-challenge) [![Coverage Status](https://coveralls.io/repos/github/gperreymond/osmo-coding-challenge/badge.svg?branch=master&kill_cache=2)](https://coveralls.io/github/gperreymond/osmo-coding-challenge?branch=master)
 
 ## TODO
 
@@ -216,7 +216,5 @@ But you can also do it by calling the microservice:
 // Control BruiserAward for a player
 res := <-bkr.Call("Achievement.ControlBruiserAward", payload.New(map[string]string{
   "AggregateID":   aggregateID,
-  "AggregateType": "Player",
-  "EventType":     "TotalAmountOfDamageDoneUpdated",
 }))
 ```
