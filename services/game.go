@@ -161,6 +161,14 @@ var GameService = moleculer.ServiceSchema{
 						"AggregateID":              participant.AggregateID,
 						"NumberOfAttemptedAttacks": participant.NumberOfAttemptedAttacks,
 					})
+					percentage := float64(participant.NumberOfHits) / float64(participant.NumberOfAttemptedAttacks)
+					ctx.Emit("Player.NumberOfLandingAttacksUpdated", map[string]interface{}{
+						"Game":                     aggregateID,
+						"AggregateID":              participant.AggregateID,
+						"NumberOfAttemptedAttacks": participant.NumberOfAttemptedAttacks,
+						"NumberOfHits":             participant.NumberOfHits,
+						"NumberOfLandingAttacks":   float64(100) * percentage,
+					})
 				}
 				return map[string]interface{}{
 					"AggregateID": aggregateID,

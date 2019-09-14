@@ -1,6 +1,6 @@
 # OSMO Coding Challenge
 
-[![CircleCI](https://circleci.com/gh/gperreymond/osmo-coding-challenge.svg?style=shield)](https://circleci.com/gh/gperreymond/osmo-coding-challenge) [![Coverage Status](https://coveralls.io/repos/github/gperreymond/osmo-coding-challenge/badge.svg?branch=master&kill_cache=2)](https://coveralls.io/github/gperreymond/osmo-coding-challenge?branch=master)
+[![CircleCI](https://circleci.com/gh/gperreymond/osmo-coding-challenge.svg?style=shield)](https://circleci.com/gh/gperreymond/osmo-coding-challenge) [![Coverage Status](https://coveralls.io/repos/github/gperreymond/osmo-coding-challenge/badge.svg?branch=master&kill_cache=3)](https://coveralls.io/github/gperreymond/osmo-coding-challenge?branch=master)
 
 ## TODO
 
@@ -134,12 +134,39 @@ For the test I used this one, but I look closely __Couchbase__ to replace it.
 
 To execute the query and play with events, you can go to __Data Explorer__ on the admin page.
 
+#### Anatomy of an event
+
+```json
+{
+"AggregateID":  "8086d060-5b97-4d80-9aa9-5a72bdd876fe" ,
+"AggregateType":  "Player" ,
+"CreatedAt": "Sat Sep 14 2019 19:52:07 GMT+00:00" ,
+"Data": {
+  "AggregateID":  "8086d060-5b97-4d80-9aa9-5a72bdd876fe" ,
+  "Game":  "914a49c1-834a-44d2-b235-141760265e37" ,
+  "TotalTimePlayedUpdated": 28
+},
+"EventType":  "TotalTimePlayedUpdated" ,
+"id":  "02d0c1a1-42b0-4cdd-b790-11c17a4402d8"
+}
+```
+
 #### “Sharpshooter Award”
 A user receives this for landing 75% of their attacks, assuming they have at least attacked once.
 
 The __RethinkDB__ query:
 
 ```js
+r.db("osmo").table("eventstore")
+.filter({
+  "AggregateID":  "<INSERT AggregateID of a player>",
+  "AggregateType":  "Player",
+  "EventType": "NumberOfLandingAttacksUpdated"
+})
+.getField("Data")
+.max("NumberOfLandingAttacks")
+.getField("NumberOfLandingAttacks")
+.ge(75);
 ```
 
 ####  “Big Winner” Award
