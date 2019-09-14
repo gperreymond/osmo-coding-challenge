@@ -9,6 +9,10 @@ jobs:
       - image: "circleci/golang:1.9"
       - image: "influxdb:1.7.8-alpine"
       - image: "postgres:9.6-alpine"
+        environment:
+          POSTGRES_DB: "osmo"
+          POSTGRES_USER: "infra"
+          POSTGRES_PASSWORD: "infra"
       - image: "rethinkdb"
 
       # Specify service dependencies here if necessary
@@ -27,7 +31,7 @@ jobs:
       # specify any bash command here prefixed with `run: `
       - run: sudo apt update
       - run: go get -u github.com/golang/dep/cmd/dep
-      - run: go dep ensure
+      - run: dep ensure
       - run: go build -o main.go
       - run: ./main --initialize
       - run: ginkgo -r -v -cover
