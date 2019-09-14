@@ -1,3 +1,7 @@
+[[override]]
+  name = "gopkg.in/fsnotify.v1"
+  source = "gopkg.in/fsnotify/fsnotify.v1"
+
 [[constraint]]
   name = "github.com/moleculer-go/moleculer"
   version = "0.2.0"
