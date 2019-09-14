@@ -7,7 +7,7 @@
 This list need to be added of course, I'm running out of time, but it's not a really hard work to do.
 
 - Env vars, from docker (K8S) and/or config file
-- Implements all the Actions to retrieve achievement (in go) ; I put all the __RethinkDB__ RQL, just need to be translated.
+- Implements all the Actions to retrieve achievement (in go) ; I put all the __RethinkDB__ ReQL, just need to be translated.
 
 I will finish, the stuff!
 
