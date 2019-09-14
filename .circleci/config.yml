@@ -36,7 +36,7 @@ jobs:
       - run: ./main --initialize
       - run: go get -u github.com/onsi/ginkgo/ginkgo  # installs the ginkgo CLI
       - run: go get -u github.com/onsi/gomega/...     # fetches the matcher library
-      - run: go get -u go get github.com/mattn/goveralls
+      - run: go get -u github.com/mattn/goveralls
       - run: ginkgo -r -v -cover
-      - run: gover /go/src/github.com/gperreymond/osmo-coding-challenge/ coverage.txt
+      - run: gover ./ coverage.txt
       - run: goveralls -coverprofile=coverage.txt -service=drone.io || echo "Error uploading coveralls"

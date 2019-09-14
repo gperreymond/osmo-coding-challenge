@@ -121,6 +121,8 @@ Or play only one:
 __RethinkDB__ is a powerfull database for map reducers, aggregate data, etc.  
 For the test I used this one, but I look closely __Couchbase__ to replace it.
 
+To execute the query and play with events, you can go to __Data Explorer__ on the admin page.
+
 #### “Sharpshooter Award”
 A user receives this for landing 75% of their attacks, assuming they have at least attacked once.
 
