@@ -52,7 +52,12 @@ Finally, launch your application: it will transmit runtime metrics to the conten
 #### Real stress test on 100 games played auto
 ![stress test](osmo-stress-test-100.png?raw=true)
 
-## Tests unit / integration
+## Tests unit or integration ?
+
+When I work with Moleculer and microservices I prefer to use a BDD approach and integration tests.
+
+__BEFORE RUNNING TESTS YOU NEED TO INITILIAZE THE DATABASES__  
+see HOW TO USE > INITILIAZING (next doc part)
 
 - https://github.com/onsi/ginkgo
 
