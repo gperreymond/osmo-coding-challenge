@@ -83,6 +83,38 @@ var _ = Describe("Service", func() {
 		res := <-bkr.Call("Game.Play", payload.Empty())
 		Expect(res.IsError()).To(Equal(false))
 	})
+	It("should fail to control the Bruiser achievement, because AggregateID is mandatory", func() {
+		bkr := broker.New(&moleculer.Config{
+			Transporter: "nats://localhost:4222",
+			LogLevel:    "fatal",
+			Metrics:     false,
+		})
+		bkr.Publish(
+			GetGame(),
+			GetPlayer(),
+			GetAchievement(),
+		)
+		bkr.Start()
+		res := <-bkr.Call("Achievement.ControlBruiserAward", payload.New(map[string]string{}))
+		Expect(res.IsError()).To(Equal(true))
+	})
+	It("should successfully control the Bruiser achievement", func() {
+		bkr := broker.New(&moleculer.Config{
+			Transporter: "nats://localhost:4222",
+			LogLevel:    "fatal",
+			Metrics:     false,
+		})
+		bkr.Publish(
+			GetGame(),
+			GetPlayer(),
+			GetAchievement(),
+		)
+		bkr.Start()
+		res := <-bkr.Call("Achievement.ControlBruiserAward", payload.New(map[string]string{
+			"AggregateID": "test",
+		}))
+		Expect(res.IsError()).To(Equal(true))
+	})
 	It("should successfully play a game, without Rethinkdb (resilience)", func() {
 		store.SetConfigStore(store.Config{
 			Address:  "test:28015",

@@ -2,6 +2,15 @@
 
 [![CircleCI](https://circleci.com/gh/gperreymond/osmo-coding-challenge.svg?style=shield)](https://circleci.com/gh/gperreymond/osmo-coding-challenge) [![Coverage Status](https://coveralls.io/repos/github/gperreymond/osmo-coding-challenge/badge.svg?branch=master&kill_cache=1)](https://coveralls.io/github/gperreymond/osmo-coding-challenge?branch=master)
 
+## TODO
+
+This list need to be added of course, I'm running out of time, but it's not a really hard work to do.
+
+- Env vars, from docker (K8S) and/or config file
+- Implements all the Actions to retrieve achievement (in go) ; I put all the __RethinkDB__ RQL, just need to be translated.
+
+I will finish, the stuff!
+
 ## Architecture
 
 Based on a solid experience with __moleculer__ used in my current company.
@@ -160,13 +169,13 @@ r.db("osmo").table("eventstore")
   "EventType": "GameStarted"
 })
 .count()
-.gt(1000);
+.ge(1000);
 ```
 
 #### “Bruiser” Award
 A user receives this for doing more than 500 points of damage in one game
 
-This is one is little bit tricky, you have to map/reduce on "TotalAmountOfDamageDone" per "Game".  
+This is one is little bit tricky, you have to map/reduce on "TotalAmountOfDamageDone" per "Game", and get the max :)
 The __RethinkDB__ query:
 
 ```js
@@ -175,11 +184,39 @@ r.db("osmo").table("eventstore")
   "AggregateID":  "<INSERT AggregateID of a player>",
   "AggregateType":  "Player",
   "EventType":  "TotalAmountOfDamageDoneUpdated"
+}).map(function(val) {
+  return val("Data")
 })
-.map(function(val) {
-  return { "control": val("Data")("TotalAmountOfDamageDone").gt(1000) }
-})
-.group("control").ungroup()
-.filter({ "group": true })
-.count();
+.max("TotalAmountOfDamageDone")
+.getField("TotalAmountOfDamageDone")
+.ge(500);
+```
+
+As example, I show here the "translated" ReQL in GO:
+
+```go
+res, _ := r.Table("eventstore").Filter(Filter{
+  AggregateID:   aggregateID,
+  AggregateType: aggregateType,
+  EventType:     eventType,
+}).Map(func(row r.Term) interface{} {
+  return row.Field("Data")
+}).Max("TotalAmountOfDamageDone").Field("TotalAmountOfDamageDone").Ge(500).Run(session)
+```
+
+How to control if a player have this achievement:
+
+```sh
+go run main.go --bruiser-award <INSERT AggregateID of a player>
+```
+
+But you can also do it by calling the microservice:
+
+```go
+// Control BruiserAward for a player
+res := <-bkr.Call("Achievement.ControlBruiserAward", payload.New(map[string]string{
+  "AggregateID":   aggregateID,
+  "AggregateType": "Player",
+  "EventType":     "TotalAmountOfDamageDoneUpdated",
+}))
 ```

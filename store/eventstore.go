@@ -2,7 +2,6 @@ package store
 
 import (
 	"errors"
-	"log"
 	"time"
 
 	"github.com/moleculer-go/moleculer"
@@ -22,24 +21,32 @@ func SetConfigStore(value Config) {
 	configStore = value
 }
 
-// InsertEvent ...
-func InsertEvent(aggregateType string, eventType string, params moleculer.Payload) error {
-	log.Println("Store InsertEvent", params)
+// Session ...
+func Session() (*r.Session, error) {
 	if configStore.Address == "" {
 		configStore = Config{
 			Address:  "localhost:28015",
 			Database: "osmo",
 		}
 	}
+	session, err := r.Connect(r.ConnectOpts{
+		Address:  configStore.Address,
+		Database: configStore.Database,
+	})
+	if err != nil {
+		return session, err
+	}
+	return session, nil
+}
+
+// InsertEvent ...
+func InsertEvent(aggregateType string, eventType string, params moleculer.Payload) error {
 	// AggregateID is mandatory
 	if params.Get("AggregateID").Exists() == false {
 		return errors.New("AggregateID is mandatory")
 	}
 	aggregateID := params.Get("AggregateID").String()
-	session, err := r.Connect(r.ConnectOpts{
-		Address:  configStore.Address,
-		Database: configStore.Database,
-	})
+	session, err := Session()
 	defer session.Close()
 	if err != nil {
 		return err

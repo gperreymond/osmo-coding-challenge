@@ -71,8 +71,8 @@ func Initialize() {
 	bkr.Stop()
 }
 
-// AchievementsPlayer ...
-func AchievementsPlayer(aggregateID string) {
+// ControlBruiserAward ...
+func ControlBruiserAward(aggregateID string) {
 	bkr := broker.New(&moleculer.Config{
 		Transporter: "nats://localhost:4222",
 		LogLevel:    "info",
@@ -80,7 +80,7 @@ func AchievementsPlayer(aggregateID string) {
 	})
 	bkr.Start()
 	time.Sleep(time.Millisecond * 1000)
-	// Control all Achievement for a player
+	// Control BruiserAward for a player
 	res := <-bkr.Call("Achievement.ControlBruiserAward", payload.New(map[string]string{
 		"AggregateID":   aggregateID,
 		"AggregateType": "Player",
@@ -118,8 +118,8 @@ func main() {
 		os.Exit(1)
 	}
 	switch arg {
-	case "--achievements-player":
-		AchievementsPlayer(os.Args[2])
+	case "--bruiser-award":
+		ControlBruiserAward(os.Args[2])
 	case "--play-game":
 		PlayGame()
 	case "--initialize":

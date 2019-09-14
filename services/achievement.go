@@ -2,9 +2,10 @@ package services
 
 import (
 	"errors"
-	"log"
 
+	"github.com/gperreymond/osmo-coding-challenge/store"
 	"github.com/moleculer-go/moleculer"
+	r "gopkg.in/rethinkdb/rethinkdb-go.v5"
 )
 
 // AchievementService ...
@@ -21,24 +22,35 @@ var AchievementService = moleculer.ServiceSchema{
 					ctx.Logger().Error("AggregateID is mandatory")
 					return errors.New("AggregateID is mandatory")
 				}
-				// AggregateType is mandatory
-				if params.Get("AggregateType").Exists() == false {
-					ctx.Logger().Error("AggregateType is mandatory")
-					return errors.New("AggregateType is mandatory")
-				}
-				// EventType is mandatory
-				if params.Get("EventType").Exists() == false {
-					ctx.Logger().Error("EventType is mandatory")
-					return errors.New("EventType is mandatory")
-				}
 				aggregateID := params.Get("AggregateID").String()
-				aggregateType := params.Get("AggregateType").String()
-				eventType := params.Get("EventType").String()
-				log.Println(aggregateID, aggregateType, eventType)
-				//res := store.AggregateByEventType(params)
-				// log.Println(res)
+				session, err := store.Session()
+				defer session.Close()
+				if err != nil {
+					ctx.Logger().Error(err)
+					return err
+				}
+				type Filter struct {
+					AggregateID   string
+					AggregateType string
+					EventType     string
+				}
+				// ReQL: Translate to GO
+				res, _ := r.Table("eventstore").Filter(Filter{
+					AggregateID:   aggregateID,
+					AggregateType: "Player",
+					EventType:     "TotalAmountOfDamageDoneUpdated",
+				}).Map(func(row r.Term) interface{} {
+					return row.Field("Data")
+				}).Max("TotalAmountOfDamageDone").Field("TotalAmountOfDamageDone").Ge(500).Run(session)
+				var badge interface{}
+				err = res.One(&badge)
+				if err != nil {
+					ctx.Logger().Error(err)
+					return err
+				}
 				return map[string]interface{}{
-					"Done": true,
+					"Achievement": "BruiserAward",
+					"Badge":       badge,
 				}
 			},
 		},
