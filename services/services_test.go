@@ -20,8 +20,9 @@ var _ = Describe("Service", func() {
 	})
 	It("should not create a player, because Name is mandatory", func() {
 		bkr := broker.New(&moleculer.Config{
-			LogLevel: "fatal",
-			Metrics:  false,
+			Transporter: "nats://localhost:4222",
+			LogLevel:    "fatal",
+			Metrics:     false,
 		})
 		bkr.Publish(
 			GetPlayer(),
@@ -33,8 +34,9 @@ var _ = Describe("Service", func() {
 	})
 	It("should succesfully create a player", func() {
 		bkr := broker.New(&moleculer.Config{
-			LogLevel: "fatal",
-			Metrics:  false,
+			Transporter: "nats://localhost:4222",
+			LogLevel:    "fatal",
+			Metrics:     false,
 		})
 		bkr.Publish(
 			GetPlayer(),
@@ -47,8 +49,9 @@ var _ = Describe("Service", func() {
 	})
 	It("should not create a player, because Player.Name is already used", func() {
 		bkr := broker.New(&moleculer.Config{
-			LogLevel: "fatal",
-			Metrics:  false,
+			Transporter: "nats://localhost:4222",
+			LogLevel:    "fatal",
+			Metrics:     false,
 		})
 		bkr.Publish(
 			GetPlayer(),
@@ -67,8 +70,9 @@ var _ = Describe("Service", func() {
 	})
 	It("should successfully play a game", func() {
 		bkr := broker.New(&moleculer.Config{
-			LogLevel: "fatal",
-			Metrics:  false,
+			Transporter: "nats://localhost:4222",
+			LogLevel:    "fatal",
+			Metrics:     false,
 		})
 		bkr.Publish(
 			GetPlayer(),

@@ -17,7 +17,7 @@ import (
 // StartServices ...
 func StartServices() {
 	bkr := broker.New(&moleculer.Config{
-		Transporter: "nats://nats.docker.localhost:4222",
+		Transporter: "nats://localhost:4222",
 		LogLevel:    "info",
 		Metrics:     true,
 	})
@@ -52,7 +52,7 @@ func Initialize() {
 	r.DBCreate("osmo").Exec(session)
 	r.DB("osmo").TableCreate("eventstore").Exec(session)
 	bkr := broker.New(&moleculer.Config{
-		Transporter: "nats://nats.docker.localhost:4222",
+		Transporter: "nats://localhost:4222",
 		LogLevel:    "info",
 		Metrics:     true,
 	})
@@ -71,7 +71,7 @@ func Initialize() {
 // AchievementsPlayer ...
 func AchievementsPlayer(aggregateID string) {
 	bkr := broker.New(&moleculer.Config{
-		Transporter: "nats://nats.docker.localhost:4222",
+		Transporter: "nats://localhost:4222",
 		LogLevel:    "info",
 		Metrics:     true,
 	})
@@ -93,7 +93,7 @@ func AchievementsPlayer(aggregateID string) {
 // PlayGame ...
 func PlayGame() {
 	bkr := broker.New(&moleculer.Config{
-		Transporter: "nats://nats.docker.localhost:4222",
+		Transporter: "nats://localhost:4222",
 		LogLevel:    "info",
 		Metrics:     true,
 	})
