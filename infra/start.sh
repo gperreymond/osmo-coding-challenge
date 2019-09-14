@@ -10,4 +10,3 @@ export IP_LOCALHOST=$MY_IP
 
 docker-compose up -d
 docker-compose -f backends/docker-compose.yml up -d
-docker-compose -f frontends/docker-compose.yml up -d
