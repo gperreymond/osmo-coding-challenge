@@ -65,4 +65,17 @@ var _ = Describe("Service", func() {
 		defer db.Close()
 		db.Unscoped().Where("name LIKE ?", "%test%").Delete(models.Player{})
 	})
+	It("should successfully play a game", func() {
+		bkr := broker.New(&moleculer.Config{
+			LogLevel: "fatal",
+			Metrics:  false,
+		})
+		bkr.Publish(
+			GetPlayer(),
+			GetGame(),
+		)
+		bkr.Start()
+		res := <-bkr.Call("Game.Play", payload.Empty())
+		Expect(res.IsError()).To(Equal(false))
+	})
 })

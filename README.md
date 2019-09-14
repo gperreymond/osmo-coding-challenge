@@ -108,6 +108,10 @@ Or play only one:
 
 ## Achievements
 
+- https://rethinkdb.docker.localhost
+
+![stress test](infra/rethinkdb.png?raw=true)
+
 __RethinkDB__ is a powerfull database for map reducers, aggregate data, etc.  
 For the test I used this one, but I look closely __Couchbase__ to replace it.
 
