@@ -1,6 +1,8 @@
 vendor/
 coverage/
 
+.DS_Store
+Gopkg.lock
 coverage.sh
 coverage.txt
 *.coverprofile

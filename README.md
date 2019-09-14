@@ -73,6 +73,7 @@ ginkgo -r -v -cover
 #### Build the binary
 
 ```sh
+go get -u github.com/golang/dep/cmd/dep
 dep ensure
 go build main.go
 ```
